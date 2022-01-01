@@ -1,0 +1,7 @@
+To implement prototype partially construct an object and store it somewhere
+
+Clone the prototype
+- implementation your own deep copy functionality or 
+- Serialize or deserialize
+
+Customize the resulting instance

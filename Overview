@@ -1,0 +1,48 @@
+SOLID, Creational, Structural, Behavioral
+
+SOLID 
+- Single Responsibility Principle
+- Open/Closed Principle
+- Liskov Substitution Principle
+- Interface Segregation Principle
+- Dependency Inversion Principle
+
+Builder
+
+Factories
+
+Prototype
+
+SingleTon
+
+Adapter
+
+Composite
+
+Decorator  
+
+Facade
+
+Flyweight
+
+Proxy
+
+Chain of Responsibility
+
+Command 
+
+Interpreter
+
+Iterator
+
+Mediator
+
+Memento
+
+Observer
+
+Strategy
+
+Template Method
+
+Visitor 

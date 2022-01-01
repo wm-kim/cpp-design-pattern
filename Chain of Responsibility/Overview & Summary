@@ -1,0 +1,21 @@
+Sequence of handlers processing an event one after another
+
+A chain of components who all get a chance to process a command or a query, optionally having default processing implementation
+and an ability to terminate to processing chain
+
+//////
+
+CoR can be implemented as 
+ - A chain of pointers. references (single linked list)
+ - Centralized list 
+ (in our case, the centralized implementation was an event broker where you basically had a signal which you could connect to and thereby get notification.)
+
+ // So basically there are two approaches.
+
+One is kind of decentralized and another is centralized. That's the key difference for the CoR
+
+Enlist the objects in the chain, possibly controlling the order ( can sort it with priority )
+
+object removal from chain (eg, disconnect from a signal)
+
+[the goal is just to let a sequence of components process some information of one after another.]

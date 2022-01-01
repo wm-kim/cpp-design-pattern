@@ -1,0 +1,17 @@
+Iterator , how to traverse of data structures happens and who makes it happen
+: an object that facilitates the traversal fo data structure
+
+========================
+
+An object can be iterated (traverse) if it defines a begin() / end() pair
+
+An iterator specified how you can traverse an object
+
+Typcially requires of != and ++ operators 
+
+++ is called sporadically(산발적으로), so cannot be recursive, but 
+
+Courtines allow recursion through generator-yielding functions
+
+// You could have it being called one, so you could have it being called the whole number of times. 
+// And in between these calls, there is no way of efficiently preserving the stack.

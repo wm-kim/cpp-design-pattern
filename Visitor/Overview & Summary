@@ -1,0 +1,15 @@
+Visitor, a tool for structure traversal rather than anything else
+
+: A pattern where a component (visitor) is allowed to traverse the entire inheritance hierarchy.
+  Implemented by propogating a single viist() method throughout the entire hierarchy (instead of implementing one method per visitor)
+  (good for OCP and SRP)
+
+  ====================
+
+  Summary
+
+  Propagate an accept(visitor* v) method throught the entire hierarchy
+
+  Create a visitor with visit(Foo*), visit(Bar*), ... for each element in the hierarchy
+  
+  Each accpet() simply calls visitor.visit(this)

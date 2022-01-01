@@ -1,0 +1,19 @@
+State, GoF suggests that the state of the system kind of controls the way that it operates (FSM)
+
+Changes in state can be explicit or in response to event (observer pattern)
+
+: A pattern in which the object behavior is determined by its state.
+  An object transition from one state to another (something needs event to trigger a transitions.)
+  A formalized construct (which manages state and transitions) is called a state machine
+
+  =======================
+
+  Summary
+
+  Given sufficient complexity, it pays to formally define possible states and events/triggers
+
+  Can define 
+   - State Entry/exit behaviors
+   - Action when a particular event causes a transition
+   - Gaurd conditions endabling/disabling a transition
+   - default action when no transition are found for an event

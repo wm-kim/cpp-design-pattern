@@ -1,0 +1,10 @@
+separate branch of computer science 
+
+Interpreter : A component that processes structured text data. 
+Dose so by turning it into seperate lexical tokens (lexing) and then interpreting sequnces of said tokens (parsing)
+
+// boost spirit : let you build the parser using some predefined constructs 
+
+Interpreter acts in two stages
+1. Lexing turns text into a set of tokens, 
+2. Parsing tokens into meaningful constructs

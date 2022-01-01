@@ -1,0 +1,13 @@
+Exposing several components 'optionally' in single interface
+
+providing a simple, easy to understand interface over a large and sophisticated body of code.
+
+make the API that you are comfortable working with
+
+================================
+
+Summary
+
+Build a facade to provide a simplified API over a set of classes
+may wish to (optionally) expose internals through the facade
+may allow users to escalate to use more complex APIs if they need to 

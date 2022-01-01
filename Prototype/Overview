@@ -1,0 +1,7 @@
+Prototype 
+
+When its easier to copy an existing object to fully initialize new one
+: A paritially initialized object that you copy (clone) and make use of it
+
+make a copy and customize it - require deep copy support
+we make the cloning convient (eg. via a factory)

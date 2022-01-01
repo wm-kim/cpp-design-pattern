@@ -1,0 +1,13 @@
+Template Method, a high level blueprint for an algorithm to be completed by inheritors
+
+: Allows us to define the 'skeleton' of the	algorithm, with concrete implementations defined in subclasses
+
+====================
+
+Summary
+
+Define an algorithm at a high level
+
+Define constituent parts as abstract methods
+
+Inherit the alogrithm class, providing necessary overrides

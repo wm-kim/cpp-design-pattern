@@ -1,0 +1,17 @@
+// getting the interface you want from the interface you have
+
+// cannnot modify our gadget to support every possible interfaces
+
+// a construct which adapts an existing interface X to conform to the requirement interface Y
+
+////////////////////////////////
+
+Summary
+
+Implementing an Adapter is easy
+
+Determine the API you have and the API you need
+
+Create a component which aggregates (has reference to, ...) the adaptee
+
+Intermediate representations can pile up : use caching and other optimizations

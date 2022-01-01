@@ -1,0 +1,10 @@
+Avoiding redundancy when storing data - ex. store a list of names and pointers to them
+bold or italic text in console - don't want each character to have formatting character. operate on ranges
+
+Formal definition
+: Space optimization technique that let us use less memory by storing common(공유) data object. allows to store externally
+common data (Eg, static map)
+
+Define the idea of 'ranges' on homogeneous collections
+ - store data related to those ranges
+ - and typically those data objects are called flyweights

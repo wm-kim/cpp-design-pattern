@@ -1,0 +1,33 @@
+Memento
+
+keep some sort of token, which 특정 상태에 있는 object를 return 할 수 있게 한다.
+
+An object or sytem goes through changes - (eg, bank account gets deposits and withdrawls)
+
+there are different ways of navigating those changes
+
+1. record every change (Command) and teach a command to 'undo' itself
+2. save snapshots of the system
+
+: A token/handle represent the system state. Lets us roll back to the state when the token was generated
+  May or may not directly expose state information (typically an immutable construct.)
+
+  ===================
+
+  Automatic Memento 
+  
+  examples where you explicitly take the memento and you stick it whenever you want to actually restore the system to a particular state.
+  can also have a memento which causes the restoration of the state in its destructor.
+
+
+  =================
+
+  Summary
+
+  Momento are used to roll back states arbitarily
+
+  is simply a token/handle class with (typically) no functions of its own
+
+  A momento is not required to expose directly the state(s) to which it reverts the system
+
+  can be used to implement undo / redo

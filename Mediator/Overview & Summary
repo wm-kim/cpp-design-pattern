@@ -1,0 +1,18 @@
+Mediator 
+
+Facilitates communication between components by letting the components be unaware of each other's presence or absence in the system.
+
+: A component that facilitates communication between their components without them nessesary being aware of each other 
+  or having direct (reference) access to each other
+
+
+===================
+
+Summary
+
+Create the mediator and have each object in the system refer to it
+ - E.g, in a field (constructor injection), ∫∏≈Î sigleton
+
+Mediator engages in bidirectional communication with its connected components
+
+Event processing libraries make communication easier to implement

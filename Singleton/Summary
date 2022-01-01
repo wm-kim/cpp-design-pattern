@@ -1,0 +1,23 @@
+almost always design smell - problem with singleton and how to overcome 
+
+For some components it only make sense to have one in the system. 
+want to prevent anyone from creating more than one instance of the same component.
+
+the constructor call is expensive
+need to care of lazy instantiation and thread safety
+
+singleton is bad idea if you have hard dependancy. if you use getter
+if you have a test in terms of dependency you can substitute the dependency with a mock object
+
+===================
+
+Making a ‘safe’ singleton is easy
+- Hide or delete the type’s constructor, copy constructor and copy assignment operators
+
+Create a static method that returns a reference to a static member
+Garunteed to be thread-safe since c++11
+
+Tpye with hard dependencies on singletons are difficult to test
+- cannot decouple the singleton and supply a fake object
+Instead of directly using a singleton, consider depending on an abstraction
+Consider defining singleton lifetime in DI container

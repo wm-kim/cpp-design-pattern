@@ -1,0 +1,18 @@
+Observer : an object that wishes to be informed about events happening in the system. 
+The entity generating the events is an observable
+
+==========================
+
+Summary
+
+Two Participants:
+
+  - Observable provides a way of subscribing to an event (signal)
+  - Obeserver performs the subscription
+
+Observable implementation is always intrusive (obsrever doesn't need to be.)
+ - need to modify that class in order to support the idea of becoming an observable
+
+ Mutlithreading/reentrant use can cause issues
+
+ Ready-made implementation of observer are available

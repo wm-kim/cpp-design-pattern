@@ -1,0 +1,14 @@
+prevents 'Cartisian product' complexity explosion
+
+// A mechanism that decouples an interface (hierarchy) from an implementation (hierarchy)
+
+: inheritance + aggregation
+
+// they don't have to engage in one big inheritance relationship.
+// you can have some inheritance and also some aggregation or just keeping references to other components.
+
+Summary 
+
+Decouples the abstraction from implementation
+Both can exist as hierachies
+A stronger form of encapsulation

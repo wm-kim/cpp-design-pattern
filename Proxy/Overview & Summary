@@ -1,0 +1,29 @@
+-> proxy is that it's interface looks just like the interface of the object that you're actually attempting to access.
+
+looks like a local object but actually works as a remote interface to some system somewhere else : communication proxy (one example)
+
+: A Class that functions as an interface to a particular resources.
+: That resources maybe remote. expensive to construct, or maybe require logging or some other added functionality
+
+/////////////////
+
+Proxy vs Decorator
+
+Proxy provides an identical interface; decorator provides an enhanced interface
+
+Decorator typically aggregates ( or has reference to ) what it is decorating; proxy doesn't have to 
+can be a brand new object, not related to the underlying object at all
+
+Proxy might not even be working with a materialized object (virtual proxy)
+
+//////////////////
+
+Summary
+
+a proxy has the same interface as the underlying object
+
+replicate the existing interface of an object and then, of course, you change its "underlying functionality."
+
+Add relevant functionality to the redefined member functions 
+
+Different proxies (communication, logging, cahces etc) have completely different behaviour

@@ -1,0 +1,30 @@
+Command
+
+: an object which "represent an instruction to perfrom a perticular actions."
+Contains all the information necessary for the action to be taken
+
+======================
+
+Command & Query
+
+Command = Asking for an action or change (eg. please set your attack value to 2)
+-> which is mutable in the sense that it causes a mutation of the object, but it doesn't have a return value
+
+Query = asking for information (please give me your attack value)
+-> typically not causing any mutations.
+
+CQS = having a seperate means of sending commands and queries
+
+* in GoF, the command design pattern actually encapsulates both command and quries
+
+=====================
+
+Summary 
+
+Encapsulate all the details of an operation in a seperate object
+
+Define instruction for applying the command (either the command itself, or elsewhere)
+
+Optionally define instructions for undoing thee command
+
+Can create composite commands (aka macros)

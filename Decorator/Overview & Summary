@@ -1,0 +1,30 @@
+Want to augment an object with additional functionality 
+do not want to rewrite or alter existing code (OCP)
+
+want to keep new function seperate (SRP)
+need to able to interact with existing structures
+
+C++ Two options : 
+ 1 - aggregate the decorate object // dynamic decorator, is where you aggregate the decorated object.
+   //  stick it in as a reference and then you provide additional functionality.
+   //  or conform to some common interface so to as to appear as the original 
+
+ 2 - inherit from the decorated object (mix in inheritance in C++)
+
+ Formal definition : Facilitates the addition of behaviours to individual objects
+
+ [Dynamic decorator / static decorator / functional decorator]
+
+
+ //////////////////////////////////////////////////////
+
+ Summary
+
+ A dynamic decorator keeps the reference to the decorated object(s)
+  - ColoredShape{Square{}}
+
+ A static decorator use mixin inheritance - don't have any common interface, you get what you inherit from the decorated object
+  - ColoredShape<Square>
+
+ Both approach allows limitless composition
+  - TransparentShape<ColoredShape<Circle>>
