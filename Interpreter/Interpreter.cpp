@@ -7,7 +7,7 @@
 using namespace std;
 #include <boost/lexical_cast.hpp>
 
-// lexing =================================================
+// lexing ================================================= turns into sequnce of token
 
 struct Token
 {
@@ -60,6 +60,7 @@ vector<Token> lex(const string& input)
                     break;
                 }
             }
+            // not much nessesary
             if (!buffer.str().empty()) // 20201210
                 result.push_back(Token{ Token::integer, buffer.str() });
         }
@@ -68,7 +69,7 @@ vector<Token> lex(const string& input)
     return result;
 }
 
-// parsing =====================================================
+// parsing ===================================================== parse token into object-oriented structure
 
 struct Element
 {
@@ -99,7 +100,7 @@ struct BinaryOperation : Element
     }
 };
 
-// lex한 값을 넘겨받음
+// parse and put into lhs or either rhs
 unique_ptr<Element> parse(const vector<Token>& tokens)
 {
     auto result = make_unique<BinaryOperation>();
@@ -107,6 +108,7 @@ unique_ptr<Element> parse(const vector<Token>& tokens)
     for (size_t i = 0; i < tokens.size(); i++)
     {
         auto token = tokens[i];
+
         switch (token.type)
         {
         case Token::integer:
@@ -137,7 +139,9 @@ unique_ptr<Element> parse(const vector<Token>& tokens)
                     break; // found it!
 
             vector<Token> subexpression(&tokens[i + 1], &tokens[j]);
-            auto element = parse(subexpression); // feed back into parse function recursively and get result
+            auto element = parse(subexpression); 
+            // feed back into parse function recursively and get result 
+            // then assign element either the lhs or rhs
             if (!have_lhs)
             {
                 result->lhs = move(element);

@@ -43,16 +43,65 @@ int main()
     a->deposit(321);
     delete a;
 
-    auto b = make_shaed<CurrentAccount>(123);
-    BankAccount* actual = b.get(); // enhancement, the proxy gives you over the API that you have. there is additional API sometimes.
+    auto b = make_shared<CurrentAccount>(123);
+    BankAccount* actual = b.get(); 
+    // enhancement, the proxy gives you over the API that you have. gives additional API & benifits.
     // looks and behaves as if it were in fact a current account
-    // don't have to call delete on it and I don't have to I don't have to have any problems when I'm passing this pointer around 
 }
 
 
 // ===========================================================================
 
-// virtual proxy gives you the appearance of working with the same object that you're used to working with,
+// Property Proxy 
+
+template <typename T>
+struct Property
+{
+    T value;
+    Property(const T initialValue)
+    {
+        *this = initialValue; // this call operator equal
+    }
+    operator T()
+    {
+        return value;
+    }
+    T operator=(T newValue)
+    {
+        return value = newValue;
+    }
+};
+
+struct Creature
+{
+    // instead of getters & setters
+    Property<int> strength{10};
+    Property<int> agility{5};
+};
+
+void property_proxy()
+{
+    Creature creature;
+    creature.agility = 20;
+    cout << creature.agility << endl;
+}
+
+int main()
+{
+    //property_proxy();
+    //smart_pointers();
+    //virtual_proxy();
+    communication_proxy();
+
+    getchar();
+    return 0;
+}
+
+// ===========================================================================
+
+// virtual proxy 
+
+//gives you the appearance of working with the same object that you're used to, 
 // even though the object might not have even been created.
 
 struct Image
@@ -63,7 +112,7 @@ struct Image
 
 struct Bitmap : Image
 {
-    Bitmap(const string& filename) // we don't really need to load the image until the drawing
+    Bitmap(const string& filename) 
     {
         cout << "Loading image from " << filename << endl;
     }
@@ -74,7 +123,8 @@ struct Bitmap : Image
     }
 };
 
-// defer the loading of the original bitmap
+// we don't really need to load the image until the drawing is requested
+// defer the loading of the original bitmap, until somebody actually wants to draw it
 struct LazyBitmap : Image
 {
     LazyBitmap(const string& filename) : filename(filename) {}
@@ -101,27 +151,12 @@ void draw_image(Image& img)
 void virtual_proxy()
 {
     LazyBitmap img{ "pokemon.png" };
-    draw_image(img); // loaded whether the bitmap is loaded or not
-    draw_image(img);
+    draw_image(img); 
 }
 
-void smart_pointers()
-{
-    BankAccount* a = new CurrentAccount(123);
-    a->deposit(321);
-    delete a;
+// ===========================================================================
 
-    // << will not work if you make this a shared_ptr<BankAccount>
-    auto b = make_shared<CurrentAccount>(123);
-
-    BankAccount* actual = b.get(); // pointer's own operations on a .
-    b->deposit(321); // underlying object's operations are on ->
-                     // note this expression is identical to what's above
-    cout << *b << endl;
-    // no delete
-
-    // see shared_ptr in file structure window
-}
+// Communication Proxy
 
 struct Pingable
 {
@@ -175,49 +210,4 @@ void communication_proxy()
     {
         tryit(pp);
     }
-}
-
-// ======== Property Proxy ======================
-
-template <typename T> struct Property
-{
-    T value;
-    Property(const T initialValue)
-    {
-        *this = initialValue; // this call operator equal
-    }
-    operator T()
-    {
-        return value;
-    }
-    T operator =(T newValue)
-    {
-        return value = newValue;
-    }
-};
-
-// ===========================================
-
-struct Creature
-{
-    Property<int> strength{ 10 };
-    Property<int> agility{ 5 };
-};
-
-void property_proxy()
-{
-    Creature creature;
-    creature.agility = 20;
-    cout << creature.agility << endl;
-}
-
-int main()
-{
-    //property_proxy();
-    //smart_pointers();
-    //virtual_proxy();
-    communication_proxy();
-
-    getchar();
-    return 0;
 }

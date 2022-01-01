@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+// lets suppose i want to keep interface, functionality of adding message "pong" happens some remote service somewhere
 struct Pingable
 {
 	virtual wstring ping(const wstring& message) = 0;

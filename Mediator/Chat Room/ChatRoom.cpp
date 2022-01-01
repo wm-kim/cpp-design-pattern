@@ -4,7 +4,7 @@
 void ChatRoom::broadcast(const string &origin, const string &message)
 {
   for (auto p : people)
-    if (p->name != origin) // 자기(broadcast를 보낸사람 origin)를 제외한 모든 사람이 받는다.
+    if (p->name != origin) 
       p->receive(origin, message);
 }
 

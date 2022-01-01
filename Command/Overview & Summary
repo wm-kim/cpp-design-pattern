@@ -1,21 +1,26 @@
+
+Want a object that representing an operation
+
 Command
 
-: an object which "represent an instruction to perfrom a perticular actions."
+: an object which represent an instruction to perfrom a perticular actions.
 Contains all the information necessary for the action to be taken
 
 ======================
 
-Command & Query
+Command & Query Seperation
 
 Command = Asking for an action or change (eg. please set your attack value to 2)
 -> which is mutable in the sense that it causes a mutation of the object, but it doesn't have a return value
 
-Query = asking for information (please give me your attack value)
--> typically not causing any mutations.
+Query = asking for information (please give me your attack value) -> typically not causing any mutations.
 
-CQS = having a seperate means of sending commands and queries
+CQS = split system into seperate components and sepreate means of sending commands and queries
+(can be implemented by the same components. or you can completely separate the system 
+and actually keep two databases kind of synchronized)
 
 * in GoF, the command design pattern actually encapsulates both command and quries
+- since they are grabbing some instructions in an object are both represented by the command design pattern.
 
 =====================
 

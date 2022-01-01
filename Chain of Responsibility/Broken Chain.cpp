@@ -4,14 +4,15 @@ using namespace std;
 #include <boost/signals2.hpp>
 using namespace boost::signals2; // a library for implementing events, sending notifications of different events to classes.
 
-// event broker = cor + observer (sginals2) + cqs (command query seperation) separate idea of splitting the system into commandsand queries.
+// event broker = CoR + observer (signals2) + cqs (command query seperation)
+// cqs : separate idea of splitting the system into commands and queries.
 
-struct Query
+struct Query // class where you get to request some information about the creature
 {
     string creature_name;
+    // query stats of the creature
     enum Argument { attack, defense } argument; // because its already inside the structure not going to use enum-class
     int result;
-
 
     Query(const string& creature_name, const Argument argument, const int result)
         : creature_name(creature_name),
@@ -23,15 +24,16 @@ struct Query
 
 struct Game // also covering mediator design pattern
 {
-    signal<void(Query&)> queries; // signal is defining the event that people can subscribe to 
+    signal<void(Query&)> queries; // signal : defining event that people can subscribe to 
+
     // in order to figure out a creature's attack or defense value,
     // you query it and every single other object in the game has a chance to modify the result of that query
-    // invoke it and the query goes through every single subscriber on that
+    // invoke it and the query goes through every single subscriber on that signal (susbcriber can modify qurey)
 };
 
 class Creature
 {
-    Game& game;
+    Game& game; // reference to the mediator
     int attack, defense;
 public:
     string name;
@@ -43,13 +45,12 @@ public:
     {
     }
 
-    // no need for this to be virtual
+    // no need for this to be virtual, perform the query
     int GetAttack() const
     {
-        // perform the query
         Query q{ name, Query::Argument::attack, attack }; // initial value
-        game.queries(q); // take the signal that we have in our mediator // 동시에 game에 집어넣음
-        return q.result; // and invoke the signals
+        game.queries(q); // take the signal that we have in our mediator and invoke the signals
+        return q.result; 
     }
 
     friend ostream& operator<<(ostream& os, const Creature& obj)
@@ -81,25 +82,26 @@ public:
 
 class DoubleAttackModifier : public CreatureModifier
 {
-    connection conn;
+    connection conn; // can make destructor and unsubscribe in the destructor.
 public:
     DoubleAttackModifier(Game& game, Creature& creature)
         : CreatureModifier(game, creature)
     {
         // whenever someone wants this creature's attack, we return DOUBLE the value
         // subscribes to the event
-        conn = game.queries.connect([&](Query& q) // lambda function which takes query, notice not a const query (going to modify its result)
+        // connect to the signal
+        conn = game.queries.connect([&](Query& q) 
             {
                 // requirements
                 if (q.creature_name == creature.name &&
                     q.argument == Query::Argument::attack)
                     q.result *= 2;
-            });
+            }); // lambda function which takes query, notice not a const query (going to modify its result)
     }
 
     ~DoubleAttackModifier()
     {
-        conn.disconnect(); // unsubscribe in the destructor.
+        conn.disconnect(); 
     }
 };
 
@@ -113,7 +115,6 @@ int main(int ac, char* av)
 
     {
         DoubleAttackModifier dam{ game, goblin };
-
         cout << goblin << endl;
     }
 

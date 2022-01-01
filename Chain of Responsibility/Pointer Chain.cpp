@@ -14,7 +14,6 @@ struct Creature
     {
     }
 
-
     friend ostream& operator<<(ostream& os, const Creature& obj)
     {
         return os
@@ -24,8 +23,7 @@ struct Creature
     }
 };
 
-// has a pointer to the next member of the same class
-
+// has a pointer to the next member of the same class, allows to chain modifiers together
 class CreatureModifier
 {
     CreatureModifier* next{ nullptr }; // unique_ptr
@@ -41,7 +39,7 @@ public:
     // list a modifier into a chain
     void add(CreatureModifier* cm)
     {
-        if (next) next->add(cm);
+        if (next) next->add(cm); // at the end of the chain in single linked list
         else next = cm;
     }
 
@@ -56,28 +54,6 @@ public:
     }
 };
 
-
-
-// able to disable the whole chain - simply fail to propogate class call
-// 
-// 1. Double the creature's attack
-// 2. Increase defense by 1 unless power > 2
-// 3. No bonuses can be applied to this creature
-
-class NoBonusesModifier : public CreatureModifier
-{
-public:
-    explicit NoBonusesModifier(Creature& creature)
-        : CreatureModifier(creature)
-    {
-    }
-
-    void handle() override
-    {
-        // nothing, prevents the walking
-    }
-};
-
 class DoubleAttackModifier : public CreatureModifier
 {
 public:
@@ -89,7 +65,8 @@ public:
     void handle() override
     {
         creature.attack *= 2;
-        CreatureModifier::handle(); // allow us to walk the chain of responsibility
+        CreatureModifier::handle(); // allow us to walk the chain of responsibility. 
+        // this is how to string different modifiers together
     }
 };
 
@@ -109,6 +86,22 @@ public:
         CreatureModifier::handle();
     }
 };
+
+// able to disable the whole chain - simply fail to propogate class call
+class NoBonusesModifier : public CreatureModifier
+{
+public:
+    explicit NoBonusesModifier(Creature &creature)
+        : CreatureModifier(creature)
+    {
+    }
+
+    void handle() override
+    {
+        // nothing, prevents the walking
+    }
+};
+
 
 int main_()
 {
@@ -132,6 +125,5 @@ int main_()
     return 0;
 }
 
-// that this particular implementation of a chain of responsibility is really quite artificial, because
-// essentially what's happening here is you're building a singly linked list.
-// why not use list or vector
+// why not use list or vector instead of linked list?
+// this is not how is done nowdays

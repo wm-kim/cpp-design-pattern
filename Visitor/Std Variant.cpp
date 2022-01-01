@@ -11,10 +11,7 @@ struct House
     enum class Type {name, number} type;
 };
 
-
 // =============================================
-
-
 
 // need to overload the function call operator () for every single type of the variance.
 struct AddressPrinter
@@ -42,7 +39,7 @@ int main(int ac, char* av[])
     std::visit([](auto& arg) {
         using T = decay_t<decltype(arg)>; // figure out type of the argument
 
-        if constexpr (is_same_v<T, string>) // c++17 ÄÄÆÄÀÏ Å¸ÀÓ¿¡ »ó¼öÇ¥Çö½ÄÀÇ boolean(true/false)¸¦ Æò°¡ÇÑ´Ù.
+        if constexpr (is_same_v<T, string>) // c++17 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ boolean(true/false)ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
         {
             cout << "A house called " << arg.c_str() << "\n";
         }

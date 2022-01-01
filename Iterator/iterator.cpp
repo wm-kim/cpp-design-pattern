@@ -17,7 +17,7 @@ template <typename T> struct Node
     Node<T>* left = nullptr;
     Node<T>* right = nullptr;
     Node<T>* parent = nullptr;
-    BinaryTree<T>* tree = nullptr;
+    BinaryTree<T>* tree = nullptr; // pointer to the overall tree
 
     explicit Node(const T& value)
         : value(value)
@@ -53,9 +53,9 @@ template <typename T> struct BinaryTree
     Node<T>* root = nullptr;
 
     explicit BinaryTree(Node<T>* const root)
-        : root{ root }, pre_order{ *this } // have reference to itself (Binarytree)
+        : root{ root }, pre_order{ *this } // pre_order needs reference to the tree itself
     {
-        root->set_tree(this);
+        root->set_tree(this); // have reference to itself (Binarytree)
     }
 
     ~BinaryTree() { if (root) delete root; }
@@ -77,12 +77,9 @@ template <typename T> struct BinaryTree
             return current != other.current;
         }
 
-        // 이 부분의 구현에 크게 들여다볼 필요없다. no recursion because you simply have an ++ which gets executed one sort of plus plus at a time. 
-        // And you need to somehow preserve the state. no ways for suspending & resuming
-        // is it possible to have an iterator which is actually recursive ==> coroutine
-        // 
-        // 
-        // no continuations in C++ (unlike C#)
+        // not going to go depth about implementation details, just needs ++ or * oprerator
+        // no-recursion implemntation, because no suspending or resuming in recursive implementation
+        // is it possible to have iterator which is recursive? - using coroutine
         PreOrderIterator<U>& operator++()
         {
             if (current->right)
@@ -107,7 +104,7 @@ template <typename T> struct BinaryTree
         Node<U>& operator*() { return *current; }
     };
 
-    // if somebody uses a range base for loop, they get PreOrderIterator
+    // default iterator, if somebody uses a range base for loop, they get PreOrderIterator
     typedef PreOrderIterator<T> iterator;
 
     iterator end()
@@ -125,13 +122,11 @@ template <typename T> struct BinaryTree
         return iterator{ n };
     }
 
+//======================================================================================================================
 
-    // you could do is you could get rid of begin and end.
-    // You could say that there is no default iteration mechanism for a tree, but you could then 
-    // expose different kinds of iterators and allow people to basically instantiate the iterator and print out the elements.
-
-    // expose as a traversal object
-    // todo: make this inorder
+    // you could do is you could get rid of begin and end. no default iteration mechanism for a tree
+    // then expose different kind of iterators (ex. pre-order, in-order, post-order)
+    // and make people to instantiate iterator
     class pre_order_traversal
     {
         BinaryTree<T>& tree;
@@ -139,9 +134,7 @@ template <typename T> struct BinaryTree
         pre_order_traversal(BinaryTree<T>& tree) : tree{ tree } {}
         iterator begin() { return tree.begin(); }
         iterator end() { return tree.end(); }
-    } pre_order; 
-
-    // todo: postorder iterator using recursive coroutines
+    } pre_order; // make a variable inside the class
 
     experimental::generator<Node<T>*> post_order()
     {
@@ -162,7 +155,6 @@ private:
         }
     }
 };
-
 
 //=========================================================================================
 
@@ -236,7 +228,7 @@ void binary_tree_iterator()
 
     cout << "=== and now, through a dedicated object:\n"; // -getting the same result as above
 
-    // use iterator name 
+    // use pre_order member as a way of iterating
     for (const auto& it : family.pre_order)
     {
         cout << it.value << "\n";

@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "xstring": "cpp",
+        "memory": "cpp",
+        "fstream": "cpp",
+        "xlocale": "cpp",
+        "sstream": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}

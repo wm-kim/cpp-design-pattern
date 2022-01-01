@@ -1,9 +1,11 @@
--> proxy is that it's interface looks just like the interface of the object that you're actually attempting to access.
 
-looks like a local object but actually works as a remote interface to some system somewhere else : communication proxy (one example)
+Formal definition
+: An interface for accessing a paticular resource
+That resources maybe remote. expensive to construct, or maybe require logging or some other added functionality
 
-: A Class that functions as an interface to a particular resources.
-: That resources maybe remote. expensive to construct, or maybe require logging or some other added functionality
+looks like a local object but acutally works as remote interface of somewhere else : communication proxy
+
+proxy is that it's interface looks just like the interface of the object that you're actually attempting to access.
 
 /////////////////
 
@@ -21,9 +23,10 @@ Proxy might not even be working with a materialized object (virtual proxy)
 Summary
 
 a proxy has the same interface as the underlying object
-
 replicate the existing interface of an object and then, of course, you change its "underlying functionality."
 
 Add relevant functionality to the redefined member functions 
 
 Different proxies (communication, logging, cahces etc) have completely different behaviour
+
+goal : change the behaviors of the object behind the scene but preserve the interface
