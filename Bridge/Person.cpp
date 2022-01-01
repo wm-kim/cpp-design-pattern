@@ -6,10 +6,11 @@
 // its implementation is deferred or relayed or bridged into a separate class.
 
 // implementation not goes into header file goes into cpp file, so not exposing the details of implementations
-// cpp files -> don't have to ship it to the cilent
+// cpp files -> don't have to ship it to the cilent who consumes the API
 
 // improving compilation speed : allows you to change the internal implementations without changing the surface API of the signatures.
 // if not consumer, whoever is actually using the header file, they would have to recompile that program
+// you can recompile and ship new binaries to the client
 
 class Person::PersonImpl
 {

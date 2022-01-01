@@ -2,9 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <functional>
 using namespace std;
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+
+// dynamic decorator
 
 struct Shape
 {
@@ -54,8 +57,7 @@ struct Square : Shape
     }
 };
 
-// we are not changing the base class of existing
-// objects
+// we are not changing the base class of existing objects
 
 // cannot make, e.g., ColoredSquare, ColoredCircle, etc.
 
@@ -101,23 +103,46 @@ struct TransparentShape : Shape
     }
 };
 
-// ColorShape { ColorShape { ColorShape { Square } } }; this is also alowed 
-// 문제점 : shape가 원이라면 ColorShape는 resize method를 호출할 수 없다.  downside is you don't have access to the underlying API 
+int main()
+{
+    vector<Shape*> shapes;
+    shapes.push_back(new Circle{ 5 });
+    shapes.push_back(new Square{ 10 });
+    shapes.push_back(new ColoredShape{ *shapes[0], "red" });
+    shapes.push_back(new TransparentShape{ *shapes[1], 128 });
 
+    for (auto shape : shapes)
+    {
+        cout << shape->str() << endl;
+    }
 
-// static implementation. bake in the information about a particular decorator right inside the type.
+    for (auto shape : shapes)
+    {
+        delete shape;
+    }
+    ColorShape{ColorShape{ColorShape{Square}}}; // this is also allowed
 
-// mixin inheritance. 
-// you can inherit from a template argument, which is something that's not available in other programming languagesand is available in C++.
+    // problem : if Shape is circle. ColorShape cannot call resize method
+    // dynamic decorator allows to build decorations at runtime but downside is you don't have access to the underlying API
+    // restricted by the intreface of shape interface
 
+    return 0;
+}
+//===========================================================================================================================
+
+// static implementation. ues c++ trick to bake in the information about a particular decorator, inside the type.
+
+// mixin inheritance. && perfect fowarding.
+// you can inherit from a template argument, which is something that's not available in other programming languages
 
 // note: class, not typename 
 // ColorShape2<Circle> redCircle; // tpye is statically defined ( + advantage : can call underlying methods)
+// contraint type T into Shape - use concept : c++20
 
-// concept : c++20
 template <typename T>
-concept IsAShape = std::is_base_of<Shape, T>::value;
+concept IsAShape = std::is_base_of<Shape, T>::value; 
 // which is just going to check that the type T inherits from shape
+// if not program will not compile
 
 template <typename T> struct ColoredShape2 : T // template <IsAShape T> struct ColoredShape2 : T 
 {
@@ -130,13 +155,12 @@ template <typename T> struct ColoredShape2 : T // template <IsAShape T> struct C
     // need this (or not!)
     ColoredShape2() {}
 
-
     // constructor fowarding
     template <typename...Args>
     ColoredShape2(const string& color, Args ...args)
         : T(std::forward<Args>(args)...), color{ color }
-        // you cannot call base class ctor here
-        // b/c you have no idea what it is
+        // you cannot call base class constructor here because you have no idea what it is
+        // fowarding all the arugments and hopes that the base class constructor can handle them
     {
     }
 
@@ -168,42 +192,29 @@ template <typename T> struct TransparentShape2 : T
     }
 };
 
-void wrapper()
+void main2()
 {
-    Circle circle{ 5 };
-    cout << circle.str() << endl;
-
-    ColoredShape red_circle{ circle, "red" };
-    cout << red_circle.str() << endl;
-
-    //red_circle.resize(); // oops
-
-    TransparentShape red_half_visible_circle{ red_circle, 128 };
-    cout << red_half_visible_circle.str() << endl;
-}
-
-void mixin_inheritance()
-{
-    // won't work without a default constructor
-    ColoredShape2<Circle> green_circle{ "green" };
-    green_circle.radius = 123;
+    ColoredShape2<Circle> green_circle{ "green", 5 };
     cout << green_circle.str() << endl;
 
-    TransparentShape2<ColoredShape2<Square>> blue_invisible_square{ 0 };
+    // won't work without a default constructor
+    ColoredShape2<Circle> green_circle2{ "green" };
+    green_circle2.radius = 123;
+    cout << green_circle2.str() << endl;
+
+    // // making lots of these new types, size of the executable increases
+    TransparentShape2<ColoredShape2<Square>> blue_invisible_square{ 0 }; // {0, "blue", 321}
     blue_invisible_square.color = "blue";
     blue_invisible_square.side = 321;
     cout << blue_invisible_square.str() << endl;
 }
 
-// making lotsand lots of these new types, which once again has certain implications in terms of the size of the executable
-////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 
-
-// can also decorate fucntion rather than class
-
+// can also decorate function rather than class
 struct Logger
 {
-    function<void()> func;
+    std::function<void()> func; // void returning doesn't take any arguments
     string name;
 
     Logger(const function<void()>& func, const string& name)
@@ -220,7 +231,8 @@ struct Logger
     }
 };
 
-// in C++, you can't infer the template arguments in a constructive.
+// instead of keeping std function can also have function as a template argument 
+// in C++, you can't infer the template arguments in a construtor
 template <typename Func>
 struct Logger2
 {
@@ -228,7 +240,7 @@ struct Logger2
     string name;
 
     // doenst use std::function directly but still feed function directly and execute (and its fine)
-    // but not going to infer the argument from invocation
+    // but not going to infer the argument 'Func' from invocation
     Logger2(const Func& func, const string& name)
         : func{ func },
         name{ name }
@@ -243,15 +255,26 @@ struct Logger2
     }
 };
 
-// helper function
+// helper function, global factory method. this approach let you infer type of 'Func' from the argument
 template <typename Func> auto make_logger2(Func func,
     const string& name)
 {
-    return Logger2<Func>{ func, name }; // feels redundant (global factory method), this approach let you infer type of func from the argument
+    return Logger2<Func>{ func, name }; 
 }
 
+int main3()
+{
+    // constuctor call
+    Logger([]() { cout << "Hello" << endl; }, "HelloFunction")();
 
+    // discarding the return value
+    auto log = make_logger2([]() { cout << "Hello" << endl; }, "HelloFunction");
+    log();
+}
 
+//===========================================================================================================================
+
+// what if you have a function which takes arguent and does return values?
 double add(double a, double b)
 {
     cout << a << "+" << b << "=" << (a + b) << endl;
@@ -284,55 +307,18 @@ struct Logger3<R(Args...)> // return value R, and other Args...
     string name;
 };
 
-// helper global function for figuring out the arguments of this particular template class.
-// don't need to specify arguments
+// helper global function for figuring out the arguments of this particular template class. don't need to specify arguments
 template <typename R, typename... Args>
-auto make_logger3(R(*func)(Args...), const string& name) // used function pointer
+auto make_logger3(R(*func)(Args...), const string& name) // used function pointer instead of std::function
 {
     return Logger3<R(Args...)>(
         std::function<R(Args...)>(func), // create std::function from function pointer 
         name);
 }
 
-void function_decorator()
+void main4()
 {
-    //Logger([]() {cout << "Hello" << endl; }, "HelloFunction")();
-
-    // cannot do this
-    //make_logger2([]() {cout << "Hello" << endl; }, "HelloFunction")();
-    auto call = make_logger2([]() {cout << "Hello!" << endl; }, "HelloFunction");
-    call();
-
     auto logged_add = make_logger3(add, "Add");
     auto result = logged_add(2, 3);
 }
 
-void constructor_forwarding()
-{
-    struct NotAShape
-    {
-        virtual string str() const { return string{}; }
-    };
-
-    // we don't want this to be legal, thus a static_assert above
-    //ColoredShape2<NotAShape> legal;
-
-    // no code completion for this case
-    // can comment out argument, too! (default constructor)
-    TransparentShape2<Square> hidden_square{ 1, 2 };
-    cout << hidden_square.str() << endl;
-
-    ColoredShape2<TransparentShape2<Square>> sq = { "red", 51, 5 };
-    cout << sq.str() << endl;
-}
-
-int main()
-{
-    function_decorator();
-    //wrapper();
-    //mixin_inheritance();
-    //constructor_forwarding();
-
-    getchar();
-    return 0;
-}

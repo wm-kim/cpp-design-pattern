@@ -8,6 +8,7 @@ enum class PointType
 
 class Point
 {
+     // insufficent for describing the situation
     /*Point(float a, float b, PointType type = PointType::cartesian)
     {
       if (type == PointType::cartesian)

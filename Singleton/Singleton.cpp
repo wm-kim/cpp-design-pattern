@@ -90,9 +90,12 @@ struct SingletonRecordFinder
     {
         int result = 0;
         for (auto& name : names)
-            result += SingletonDatabase::get().get_population(name); // strongly tied to real datatase
+            result += SingletonDatabase::get().get_population(name); // dependency, strongly tied to real datatase
+        // it is itegration test, did not want to test the operation of the real database, 
+        // but due to the strong coupling, it is hard to test
         // can't get proper unit test -> get dummy data of our own
         // use little bit of dependency injection -> don't imply have to use spcecial heavy weight library
+        // just means that you have a point which you can insert the dependency instead of actual object
         return result;
     }
 };

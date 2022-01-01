@@ -58,6 +58,7 @@ private:
   Points points;
 };
 
+// cache about the information of the hash value of different lines
 struct LineToPointCachingAdapter
 {
   typedef vector<Point> Points;
@@ -106,7 +107,7 @@ struct LineToPointCachingAdapter
   virtual Points::iterator end() { return cache[line_hash].end(); }
 private:
   // cache storage
-  size_t line_hash; // last hash gernated 
+  size_t line_hash; // last hash generated 
   static map<size_t, Points> cache;
 };
 

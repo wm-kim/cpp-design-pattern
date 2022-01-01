@@ -45,6 +45,7 @@ class Point
 public:
     float x, y;
     static PointFactory Factory; // singleton
+    // or use getFactory()
 };
 
 int main_2()
@@ -53,7 +54,7 @@ int main_2()
     // Point p{ 1,2 };
 
     // nope!
-    // Point::PointFactory pf;
+    // Point::PointFactory pf; 
 
     // if factory is public, then
     //auto p = Point::PointFactory::NewCartesian(3, 4);
@@ -65,4 +66,4 @@ int main_2()
 }
 
 // upside of inner class : access to private members, can have control of life time
-// 다른 사람이 factory 만드는 걸 방지, 생성자를 private으로 만들고 getter 메서드를 통해 factory를 얻게 할 수 도 있다.
+// downside of inner class : can't access private members, can't have control of life time

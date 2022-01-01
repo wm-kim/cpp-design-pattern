@@ -20,6 +20,8 @@ public:
     int area() const { return width * height; }
 };
 
+// inherit from Rectangle is not the best idea, can have boolean flag
+// for our design, unfortunately, it is impossible
 class Square : public Rectangle
 {
 public:

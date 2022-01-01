@@ -1,0 +1,4 @@
+A builder is seperate component for building object
+Can either give builder a constructor or return via a static function
+To make builder fluent, return this
+Different facets of an object can be built with different builders working in tandem via a base class

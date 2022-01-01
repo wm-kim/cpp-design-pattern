@@ -3,9 +3,25 @@
 #include <iostream>
 using namespace std;
 
+// mono state design pattern is a variation of the Singleton design pattern
+// viable solution to singleton problem but has lot of drawbacks
+class Printer
+{
+    static int id; // cannot inherit static field, inflexible, client isn't informed about the fact that is singleton
+public:
+    int get_id() const
+    {
+        return id;
+    }
+
+    void set_id(int id)
+    {
+        Printer::id = id;
+    }
+}
 
 // multiton does is it sets up the kind of key value store where you can optionally restrict the
-// number of elements which are actually included in that storeand given out to the client.
+// number of elements which are actually included in that store 
 enum class Importance
 {
     primary,
@@ -20,7 +36,6 @@ class Multiton
 public:
     static shared_ptr<T> get(const Key& key)
     {
-        // 이미 만들어져 있다면 그것을 return 한다.
         if (const auto it = instances.find(key); // C++17 initialize in if statement
             it != instances.end()) // provided
         {
@@ -58,7 +73,7 @@ int Printer::totalInstanceCount = 0;
 
 //class Printer
 //{
-//    static int id; // static field를 상속할 수 없다.
+//    static int id; 
 //public:
 //    int get_id() const { return id; }
 //    void set_id(int value) { id = value; }
@@ -72,7 +87,3 @@ int main()
     auto aux = mt::get(Importance::secondary);
     auto aux2 = mt::get(Importance::secondary); // expecting returning same instance
 }
-
-// Monostate design pattern is that the client isn't really informed it is singleton
-// its a viable solution to singleton problem
-// But it is a solution which brings a lot of drawbacks. not recommand of using it

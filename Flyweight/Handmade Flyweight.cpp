@@ -53,7 +53,7 @@ struct User
     }
 
 protected:
-    // using a map to store the indices.
+    // using a map to store the indices. building cache machenism for strings. 
     static bimap<key, string> names;
     static key seed;
 
@@ -98,14 +98,14 @@ void naive_flyweight()
     User::info();
 }
 
-/////////////////////// can also use library solutions - using boost
+//==============================================================================
 
+
+// can also use library solutions - using boost
 struct User2
 {
     // users share names! e.g., John Smith
     flyweight<string> first_name, last_name;
-    //string first_name, last_name;
-    // ...
 
     User2(const string& first_name, const string& last_name) // can assign a fly weight of string from string 
     { // can print it to the command line without any particular issues
@@ -117,7 +117,6 @@ void boost_flyweight()
     User2 john_doe{ "John", "Doe" };
     User2 jane_doe{ "Jane", "Doe" };
 
-    // 포인터로 비교해본다
     cout << boolalpha << (&jane_doe.last_name.get() == &john_doe.last_name.get());
     //cout << (&jane_doe.last_name == &john_doe.last_name);
 }

@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 
+// foward declaration
 class PersonBuilder;
 
 class Person
@@ -24,6 +25,7 @@ public:
     std::cout << "Person destroyed\n";
   }
 
+  // use this to jump to the next step in the fluent interface
   static PersonBuilder create();
 
   Person(Person&& other)

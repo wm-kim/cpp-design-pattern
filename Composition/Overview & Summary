@@ -1,1 +1,11 @@
-A mechanism for treating individual (scalar) objects and compositions of objects in a uniform manner
+Object use other object's fields/ properties / methods through inheritance and composition.
+composition let us make compound objects
+A mechanism for treating individual (scalar) objects and compound objects in a uniform manner
+
+=====================================
+
+Object can use other object via inheritance/composition
+some composed and singular objects need similar/identical behaviors
+
+composite design pattern let us treat both types of object uniformly
+C++ use duck typing, expecting enumerable type to provide begin() / end()

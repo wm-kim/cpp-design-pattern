@@ -4,6 +4,7 @@
 #include <vector>
 using namespace std;
 
+// inefficent way - boolean array for everysingle characters
 class FormattedText
 {
     string plain_text;
@@ -71,12 +72,14 @@ public:
         string s;
         for (size_t i = 0; i < obj.plain_text.length(); i++)
         {
-            auto c = obj.plain_text[i]; //  verify whether or not this range covers this particular point.
+            auto c = obj.plain_text[i]; // verify whether or not this range covers this particular point.
             for (const auto& rng : obj.formatting)
             {
                 if (rng.covers(i) && rng.capitalize) // goes for each of the text ranges 
                     c = toupper(c);
                 s += c;
+                // this isn't the perfect solution. two ranges affecting a character, it's going to be duplicated
+                // OK for us because we're just going to be applying just capitalization
             }
         }
         return os << s;
