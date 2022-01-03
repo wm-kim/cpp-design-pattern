@@ -1,7 +1,8 @@
-instead of calling the left accept and right, accpet individually, you would actually take the
-left and the right and you would call some sort of combine accept on it. [multiple dispatch, multimethods]
+// take single argument, easy to do double dispatch
+// might need visit method that takes two arguments -> take the left and right 
+// multiple dispatch(multimethods) can be implemented
+// but not going to do in the context of visitor
 
-depending on which object collides with each other, object, you have different effects.
 
 #include <iostream>
 #include <string>
@@ -16,12 +17,11 @@ void collide(GameObject& first, GameObject& second); // global function
 struct GameObject
 {
 	virtual ~GameObject() = default;
-	virtual type_index type() const = 0; // 복사 및 대입이 가능한 type_info
-
-	virtual void collide(GameObject& other) { ::collide(*this, other); }
+	virtual type_index type() const = 0;
+	virtual void collide(GameObject& other) { ::collide(*this, other); } // member function that reuse global function
 };
 
-// CRTP (Curiously recurring template pattern)
+// in between class. CRTP 
 template <typename T> struct GameObjectImpl : GameObject
 {
 	type_index type() const override
@@ -33,6 +33,7 @@ template <typename T> struct GameObjectImpl : GameObject
 struct Planet : GameObjectImpl<Planet> {};
 struct Asteroid : GameObjectImpl<Asteroid> {};
 struct Spaceship : GameObjectImpl<Spaceship> {};
+
 struct ArmedSpaceship : Spaceship
 {
 	type_index type() const override {
@@ -45,6 +46,7 @@ void asteroid_planet() { cout << "asteroid burns up in atmosphere\n"; }
 void asteroid_spaceship() { cout << "asteroid hits and destroys spaceship\n"; }
 void asteroid_armed_spaceship() { cout << "spaceship shoots asteroid\n"; }
 
+// this might be over engineered, but it's just a demo
 map<pair<type_index, type_index>, void(*)(void)> outcomes{
 	{{typeid(Spaceship), typeid(Planet)}, spaceship_planet},
 	{{typeid(Asteroid),typeid(Planet)}, asteroid_planet},
@@ -65,7 +67,7 @@ void collide(GameObject& first, GameObject& second)
 			return;
 		}
 	}
-	it->second(); // function ptr
+	it->second(); // calls the function ptr
 }
 
 int main__(int argc, char* argv[])

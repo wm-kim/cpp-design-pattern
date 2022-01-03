@@ -29,4 +29,4 @@ Add relevant functionality to the redefined member functions
 
 Different proxies (communication, logging, cahces etc) have completely different behaviour
 
-goal : change the behaviors of the object behind the scene but preserve the interface
+[ goal : change the behaviors of the object behind the scene but preserve the interface ]

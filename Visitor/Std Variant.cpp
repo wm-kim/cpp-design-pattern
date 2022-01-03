@@ -1,6 +1,11 @@
-#include "Headers.hpp"
+#include <iostream>
+#include <variant>
 
-// some house has actually have names as opposed to numbers. Want to have this ability of being able to store one value or the other value.
+using namespace std;
+
+// some house has actually have names as opposed to numbers in address
+// Want to have this ability of being able to store one value or the other value.
+
 // Old C++
 struct House
 {
@@ -13,8 +18,11 @@ struct House
 
 // =============================================
 
+// modern C++
+
 // need to overload the function call operator () for every single type of the variance.
-struct AddressPrinter
+// checks at compile time whether you implmented all of the cases.
+struct AddressPrinter // visitor
 {
     void operator()(const string& house_name) const {
         cout << "A house called " << house_name << "\n";
@@ -29,17 +37,22 @@ int main(int ac, char* av[])
 {
     // can specify as template arguments all of the varieties of data you want to store.
     variant<string, int> house;
+
     //house = "Montefiore Castle";
     house = 221;
 
+    // how can youprint that part of the house which has assigned -> visitor pattern
+
     AddressPrinter ap;
-    std::visit(ap, house); // (visitor, the stuff you want to visit)
+
+    // takes the first agrument as callable, and second arugment as thing you want to visit 
+    std::visit(ap, house); // call the appropriate overload of the function call operator
 
     // what if you want to create a visitor in-place? use lambda
     std::visit([](auto& arg) {
         using T = decay_t<decltype(arg)>; // figure out type of the argument
 
-        if constexpr (is_same_v<T, string>) // c++17 ������ Ÿ�ӿ� ���ǥ������ boolean(true/false)�� ���Ѵ�.
+        if constexpr (is_same_v<T, string>) 
         {
             cout << "A house called " << arg.c_str() << "\n";
         }

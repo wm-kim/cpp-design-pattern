@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-// handling events in a centralized manner.
+// just interested in handling events in a centralized manner.
 // fleshed out with the use of the observer pattern and the mediator pattern
 
 // get the notifications about scoring goals
